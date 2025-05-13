@@ -3,8 +3,11 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:google_mlkit_image_labeling/google_mlkit_image_labeling.dart';
+import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 import 'package:vehicle_manager/app/app_features/media_view/media_veiw_routebuilder.dart';
 import 'package:vehicle_manager/app/app_features/vehicle_details/screen/components/vehicle_details_initial.dart';
+import 'package:vehicle_manager/services/object_detection_service/object_detection_service.dart';
 
 part 'media_capture_state.dart';
 
@@ -58,6 +61,26 @@ class MediaCaptureCubit extends Cubit<MediaCaptureState> {
       XFile imageFile = await cameraController.takePicture();
       File imagefile = File(imageFile.path);
 
+      // final detector = ObjectDetectorService();
+
+      // final results = await detector.detectObjectsFromFile(imagefile);
+      final List<String> detectedLabels = [];
+      // for (var obj in results) {
+      //   for (var label in obj.labels) {
+      //     detectedLabels.add(label.text);
+      //   }
+      // }
+
+      final InputImage inputImage = InputImage.fromFile(imagefile);
+      final ImageLabeler labeler =
+          ImageLabeler(options: ImageLabelerOptions(confidenceThreshold: 0.5));
+      final labels = await labeler.processImage(inputImage);
+
+      for (final label in labels) {
+        log("Detected: ${label.label}, confidence: ${label.confidence}");
+        detectedLabels.add(label.label);
+      }
+
       onImageCaptured();
 
       if (!context.mounted) return;
@@ -68,6 +91,7 @@ class MediaCaptureCubit extends Cubit<MediaCaptureState> {
             mediaFile: imagefile,
             mediaType: MediaType.image,
             showBottomBar: true,
+            detectedObjects: detectedLabels,
           ),
         ),
       );

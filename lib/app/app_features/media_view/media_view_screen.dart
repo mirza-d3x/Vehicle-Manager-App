@@ -2,18 +2,25 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:video_player/video_player.dart';
 
-class ImageMediaViewScreen extends StatefulWidget {
+class ImageMediaViewScreen extends StatelessWidget {
   final File imageFile;
-  const ImageMediaViewScreen({required this.imageFile, super.key});
+  final List<String>? detectedObjects;
+  const ImageMediaViewScreen(
+      {required this.imageFile, super.key, this.detectedObjects});
 
-  @override
-  State<ImageMediaViewScreen> createState() => _ImageMediaViewScreenState();
-}
-
-class _ImageMediaViewScreenState extends State<ImageMediaViewScreen> {
   @override
   Widget build(BuildContext context) {
-    return Image.file(widget.imageFile);
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        Expanded(
+          child: Image.file(imageFile),
+        ),
+        const SizedBox(height: 16),
+        if (detectedObjects!.isNotEmpty)
+          Text('Detected Objects: ${detectedObjects!.first}'),
+      ],
+    );
   }
 }
 

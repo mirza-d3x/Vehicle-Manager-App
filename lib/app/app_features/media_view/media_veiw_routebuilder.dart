@@ -8,11 +8,13 @@ class MediaVeiwRoutebuilder extends StatelessWidget {
   final File mediaFile;
   final MediaType mediaType;
   final bool showBottomBar;
+  final List<String>? detectedObjects;
 
   const MediaVeiwRoutebuilder({
     required this.mediaFile,
     required this.mediaType,
     required this.showBottomBar,
+    this.detectedObjects,
     super.key,
   });
 
@@ -66,7 +68,10 @@ class MediaVeiwRoutebuilder extends StatelessWidget {
   Widget buildImagePreview() {
     switch (mediaType) {
       case MediaType.image:
-        return ImageMediaViewScreen(imageFile: mediaFile);
+        return ImageMediaViewScreen(
+          imageFile: mediaFile,
+          detectedObjects: detectedObjects,
+        );
       case MediaType.video:
         return VideoMediaViewScreen(videoFile: mediaFile);
     }
