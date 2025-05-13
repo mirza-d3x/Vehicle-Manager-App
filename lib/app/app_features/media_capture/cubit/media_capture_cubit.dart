@@ -4,10 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:google_mlkit_image_labeling/google_mlkit_image_labeling.dart';
-import 'package:google_mlkit_object_detection/google_mlkit_object_detection.dart';
 import 'package:vehicle_manager/app/app_features/media_view/media_veiw_routebuilder.dart';
 import 'package:vehicle_manager/app/app_features/vehicle_details/screen/components/vehicle_details_initial.dart';
-import 'package:vehicle_manager/services/object_detection_service/object_detection_service.dart';
 
 part 'media_capture_state.dart';
 
